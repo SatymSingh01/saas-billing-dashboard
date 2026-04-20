@@ -1,0 +1,69 @@
+@model DashboardViewModel
+@{ ViewData["Title"] = "Dashboard"; }
+
+<h4 class="mb-4 fw-semibold">Dashboard</h4>
+
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-xl-3">
+        <div class="card stat-card p-3">
+            <div class="text-muted small">Total Customers</div>
+            <div class="fs-3 fw-bold text-primary">@Model.TotalCustomers</div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card stat-card p-3">
+            <div class="text-muted small">Active Subscriptions</div>
+            <div class="fs-3 fw-bold text-success">@Model.ActiveSubscriptions</div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card stat-card p-3">
+            <div class="text-muted small">Revenue (30 days)</div>
+            <div class="fs-3 fw-bold text-info">@Model.MonthlyRevenue.ToString("C")</div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card stat-card p-3">
+            <div class="text-muted small">Outstanding Balance</div>
+            <div class="fs-3 fw-bold @(Model.OverdueInvoices > 0 ? "text-danger" : "text-warning")">
+                @Model.OutstandingBalance.ToString("C")
+                @if (Model.OverdueInvoices > 0)
+                {
+                    <span class="badge bg-danger fs-6 ms-1">@Model.OverdueInvoices overdue</span>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card stat-card">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <span class="fw-semibold">Recent Invoices</span>
+        <a asp-controller="Invoices" asp-action="Index" class="btn btn-sm btn-outline-primary">View all</a>
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Invoice #</th>
+                    <th>Customer</th>
+                    <th>Total</th>
+                    <th>Due</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var inv in Model.RecentInvoices)
+                {
+                    <tr>
+                        <td><code>@inv.InvoiceNumber</code></td>
+                        <td>@inv.CustomerName</td>
+                        <td>@inv.Total.ToString("C")</td>
+                        <td>@inv.DueDate.ToString("MMM d, yyyy")</td>
+                        <td><span class="badge badge-@inv.Status.ToLower()">@inv.Status</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

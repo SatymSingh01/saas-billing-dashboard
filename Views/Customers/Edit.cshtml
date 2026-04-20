@@ -1,0 +1,45 @@
+@model Customer
+@{ ViewData["Title"] = "Edit Customer"; }
+
+<div class="d-flex align-items-center gap-2 mb-4">
+    <a asp-action="Index" class="text-muted"><i class="bi bi-arrow-left"></i></a>
+    <h4 class="fw-semibold mb-0">Edit Customer</h4>
+</div>
+
+<div class="card stat-card" style="max-width:540px;">
+    <div class="card-body">
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="CreatedAt" />
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Company" class="form-label"></label>
+                <input asp-for="Company" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Phone" class="form-label"></label>
+                <input asp-for="Phone" class="form-control" />
+            </div>
+            <div class="mb-4 form-check">
+                <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+                <label asp-for="IsActive" class="form-check-label">Active</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-link">Cancel</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

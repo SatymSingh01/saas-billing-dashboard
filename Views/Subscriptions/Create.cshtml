@@ -1,0 +1,39 @@
+@model Subscription
+@{ ViewData["Title"] = "New Subscription"; }
+
+<div class="d-flex align-items-center gap-2 mb-4">
+    <a asp-action="Index" class="text-muted"><i class="bi bi-arrow-left"></i></a>
+    <h4 class="fw-semibold mb-0">New Subscription</h4>
+</div>
+
+<div class="card stat-card" style="max-width:480px;">
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="CustomerId" class="form-label">Customer</label>
+                <select asp-for="CustomerId" asp-items="ViewBag.Customers" class="form-select">
+                    <option value="">— Select customer —</option>
+                </select>
+                <span asp-validation-for="CustomerId" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="SubscriptionPlanId" class="form-label">Plan</label>
+                <select asp-for="SubscriptionPlanId" asp-items="ViewBag.Plans" class="form-select">
+                    <option value="">— Select plan —</option>
+                </select>
+                <span asp-validation-for="SubscriptionPlanId" class="text-danger small"></span>
+            </div>
+            <div class="mb-4">
+                <label asp-for="StartDate" class="form-label"></label>
+                <input asp-for="StartDate" type="date" class="form-control" value="@DateTime.Today.ToString("yyyy-MM-dd")" />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create</button>
+            <a asp-action="Index" class="btn btn-link">Cancel</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

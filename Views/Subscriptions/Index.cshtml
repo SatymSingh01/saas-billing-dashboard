@@ -1,0 +1,53 @@
+@model IEnumerable<Subscription>
+@{ ViewData["Title"] = "Subscriptions"; }
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-semibold mb-0">Subscriptions</h4>
+    @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+    {
+        <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus me-1"></i>New Subscription</a>
+    }
+</div>
+
+<div class="card stat-card">
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Customer</th>
+                    <th>Plan</th>
+                    <th>Price</th>
+                    <th>Started</th>
+                    <th>Next Billing</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var s in Model)
+                {
+                    <tr>
+                        <td><a asp-controller="Customers" asp-action="Details" asp-route-id="@s.CustomerId">@s.Customer.Name</a></td>
+                        <td>@s.Plan.Name</td>
+                        <td>@s.Plan.Price.ToString("C")/@(s.Plan.BillingCycle == BillingCycle.Annual ? "yr" : "mo")</td>
+                        <td>@s.StartDate.ToString("MMM d, yyyy")</td>
+                        <td>@(s.NextBillingDate?.ToString("MMM d, yyyy") ?? "—")</td>
+                        <td>
+                            <span class="badge @(s.Status == SubscriptionStatus.Active ? "bg-success" : s.Status == SubscriptionStatus.Cancelled ? "bg-danger" : "bg-secondary")">
+                                @s.Status
+                            </span>
+                        </td>
+                        <td>
+                            @if (s.Status == SubscriptionStatus.Active && (User.IsInRole("Admin") || User.IsInRole("Manager")))
+                            {
+                                <form asp-action="Cancel" asp-route-id="@s.Id" method="post" onsubmit="return confirm('Cancel this subscription?')">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Cancel</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
