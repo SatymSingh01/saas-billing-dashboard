@@ -26,10 +26,10 @@ public class HomeController : Controller
             ActiveSubscriptions = await _db.Subscriptions.CountAsync(s => s.Status == SubscriptionStatus.Active),
             MonthlyRevenue = await _db.Payments
                 .Where(p => p.PaidAt >= DateTime.UtcNow.AddDays(-30))
-                .SumAsync(p => (decimal?)p.Amount) ?? 0,
+                .SumAsync(p => p.Amount),
             OutstandingBalance = await _db.Invoices
                 .Where(i => i.Status == InvoiceStatus.Sent || i.Status == InvoiceStatus.Overdue)
-                .SumAsync(i => (decimal?)(i.Amount + i.TaxAmount)) ?? 0,
+                .SumAsync(i => i.Amount + i.TaxAmount),
             OverdueInvoices = await _db.Invoices.CountAsync(i => i.Status == InvoiceStatus.Overdue),
             RecentInvoices = await _db.Invoices
                 .Include(i => i.Customer)
