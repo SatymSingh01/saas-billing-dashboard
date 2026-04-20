@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: saas-billing-dashboard
+    runtime: docker
+    plan: free
+    branch: main
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
