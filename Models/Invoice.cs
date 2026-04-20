@@ -28,7 +28,7 @@ public class Invoice
     [Column(TypeName = "decimal(18,2)")]
     public decimal TaxAmount { get; set; }
 
-    [Column(TypeName = "decimal(18,2)")]
+    [NotMapped]
     public decimal TotalAmount => Amount + TaxAmount;
 
     public InvoiceStatus Status { get; set; } = InvoiceStatus.Draft;

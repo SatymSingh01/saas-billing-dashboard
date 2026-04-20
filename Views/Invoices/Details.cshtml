@@ -112,7 +112,7 @@
                         <div class="mb-3">
                             <label class="form-label">Payment Method</label>
                             <select name="method" class="form-select">
-                                @foreach (var m in Enum.GetValues<PaymentMethod>())
+                                @foreach (PaymentMethod m in Enum.GetValues(typeof(PaymentMethod)))
                                 {
                                     <option value="@m">@m</option>
                                 }
