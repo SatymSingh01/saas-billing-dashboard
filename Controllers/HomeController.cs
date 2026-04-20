@@ -14,6 +14,10 @@ public class HomeController : Controller
 
     public HomeController(ApplicationDbContext db) => _db = db;
 
+    [AllowAnonymous]
+    public IActionResult Error() =>
+        StatusCode(500, "An unexpected error occurred. Check application logs.");
+
     public async Task<IActionResult> Index()
     {
         var vm = new DashboardViewModel

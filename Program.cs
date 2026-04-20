@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SaasBillingDashboard.Data;
@@ -17,6 +18,13 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 })
 .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+// In Docker, persist DataProtection keys to a writable directory so
+// the auth cookie middleware doesn't fail on first request.
+var dpKeysPath = Path.Combine(builder.Environment.ContentRootPath, "dpkeys");
+Directory.CreateDirectory(dpKeysPath);
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo(dpKeysPath));
 
 builder.Services.AddControllersWithViews();
 
